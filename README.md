@@ -46,6 +46,7 @@ Options:
   --help                          Show this message and exit.
   ```
    
+Container repo: `https://hub.docker.com/r/servergurus/dcos-shakedown/`
 
 ## Further Usage
 
