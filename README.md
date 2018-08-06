@@ -1,15 +1,70 @@
-# Shakedown [![Build Status](http://jenkins.mesosphere.com/service/jenkins/buildStatus/icon?job=public-shakedown-master)](http://jenkins.mesosphere.com/service/jenkins/job/public-shakedown-master/)
-
+# Shakedown 
 DC/OS test harness.
-
 
 ## Overview
 
 *A shakedown is a period of testing or a trial journey undergone by a ship, aircraft or other craft and its crew before being declared operational.
-    — https://en.wikipedia.org/wiki/Shakedown_(testing)*
+
+For DCOS Shakedown testing, you can go with either the "Shakedown as Docker Container" or "Shakedown as a native Installation" option.
+
+## Shakedown as Docker Container
+
+- Pull the docker image -
+```docker pull servergurus/dcos-shakedown```
+
+- Run `shakedown` commands via the docker container -
+```docker run -it servergurus/dcos-shakedown <command_name>```
+   For example, ```docker run -it servergurus/dcos-shakedown shakedown --help```
+   
+```
+Usage: shakedown [OPTIONS] [TESTS]...
+
+  Shakedown is a DC/OS test-harness wrapper for the pytest tool.
+
+Options:
+  -u, --dcos-url TEXT             URL to a running DC/OS cluster.
+  -f, --fail [fast|never]         Sepcify whether to continue testing when
+                                  encountering failures. (default: never)
+  -m, --timeout INTEGER           Seconds after which to terminate a running
+                                  test
+  --ssh-user TEXT                 Username for cluster ssh authentication
+  -i, --ssh-key-file PATH         Path to the SSH keyfile to use for
+                                  authentication.
+  -q, --quiet                     Suppress all superfluous output.
+  -k, --ssl-no-verify             Suppress SSL certificate verification.
+  -o, --stdout [pass|fail|skip|all|none]
+                                  Print the standard output of tests with the
+                                  specified result. (default: fail)
+  -s, --stdout-inline             Display output inline rather than after test
+                                  phase completion.
+  -p, --pytest-option TEXT        Options flags to pass to pytest.
+  -t, --oauth-token TEXT          OAuth token to use for DC/OS authentication.
+  -n, --username TEXT             Username to use for DC/OS authentication.
+  -w, --password TEXT             Password to use for DC/OS authentication.
+  --no-banner                     Suppress the product banner.
+  --version                       Show the version and exit.
+  --help                          Show this message and exit.
+  ```
+   
+
+## Further Usage
+
+`shakedown --dcos-url=http://dcos.example.com [options] [path_to_tests]`
+
+- `--dcos-url` is required.
+- tests within the current working directory will be auto-discovered unless specified.
+- arguments can be stored in a `~/.shakedown` [TOML](https://github.com/toml-lang/toml) file (command-line takes precedence)
+- `shakedown --help` is your friend.
 
 
-## Installation
+### Running in parallel
+
+Shakedown can be run against multiple DC/OS clusters in parallel by setting the `DCOS_CONFIG_ENV` environmental variable to a unique file, eg:
+
+`DCOS_CONFIG_ENV='shakedown-custom-01.toml' shakedown --dcos-url=http://dcos.example.com [options] [path_to_tests]`   
+
+
+## Shakedown as a native Installation 
 
 Shakedown requires Python 3.4+.
 
@@ -57,23 +112,6 @@ This virtual environment can then be activated in new terminal sessions with:
 `source $HOME/shakedown/bin/activate`
 
 
-## Usage
-
-`shakedown --dcos-url=http://dcos.example.com [options] [path_to_tests]`
-
-- `--dcos-url` is required.
-- tests within the current working directory will be auto-discovered unless specified.
-- arguments can be stored in a `~/.shakedown` [TOML](https://github.com/toml-lang/toml) file (command-line takes precedence)
-- `shakedown --help` is your friend.
-
-
-### Running in parallel
-
-Shakedown can be run against multiple DC/OS clusters in parallel by setting the `DCOS_CONFIG_ENV` environmental variable to a unique file, eg:
-
-`DCOS_CONFIG_ENV='shakedown-custom-01.toml' shakedown --dcos-url=http://dcos.example.com [options] [path_to_tests]`
-
-
 ## Helper methods
 
 Shakedown is a testing tool as well as a library.  Many helper functions are available via `from shakedown import *` in your tests.  See the [API documentation](API.md) for more information.
@@ -82,13 +120,3 @@ Shakedown is a testing tool as well as a library.  Many helper functions are ava
 ## License
 
 Shakedown is licensed under the Apache License, Version 2.0.  For additional information, see the [LICENSE](LICENSE) file included at the root of this repository.
-
-
-## Reporting issues
-
-Please report issues and submit feature requests for Shakedown by [creating an issue in the DC/OS JIRA with the "Shakedown" component](https://jira.mesosphere.com/secure/CreateIssueDetails!init.jspa?pid=14105&components=19807&issuetype=3) (JIRA account required).
-
-
-## Contributing
-
-See the [CONTRIBUTING](CONTRIBUTING.md) file in the root of this repository.
