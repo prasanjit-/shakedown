@@ -1,5 +1,5 @@
 # Shakedown 
-DC/OS test harness.
+DC/OS test harness with containerised version.
 
 ## Overview
 
