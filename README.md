@@ -12,7 +12,7 @@ For DCOS Shakedown testing, you can go with either the "Shakedown as Docker Cont
 - Pull the docker image -
 ```docker pull servergurus/dcos-shakedown```
 
-- Run `shakedown` commands via the docker container -
+- Run `shakedown` commands via the docker container:
 ```docker run -it servergurus/dcos-shakedown <command_name>```
    For example, ```docker run -it servergurus/dcos-shakedown shakedown --help```
    
